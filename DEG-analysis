@@ -1,0 +1,25 @@
+#set factor levels
+coldata$Treatment <- factor(coldata$Treatment)
+coldata$Sequencing <- factor(coldata$Sequencing)
+
+#set DESeq2 matrix and inport count data and coldata information
+dds <- DESeqDataSetFromMatrix(countData = count_data,
+                       colData = coldata,
+                       design = ~ Sequencing + Treatment)
+
+#setting reference for treatment factor
+dds$Treatment <- factor(dds$Treatment, levels = c("untreated", "treated"))
+
+#keeping rows
+keep <- rowSums(counts(dds)) >= 5
+dds <- dds[keep,]
+
+#NOTE: collapse technical replicates
+
+#perform statistical analysis of DGE
+dds <- DESeq(dds)
+res <- results(dds)
+
+#exploring results
+summary(res)
+res
