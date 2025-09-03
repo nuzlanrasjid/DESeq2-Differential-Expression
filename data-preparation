@@ -1,0 +1,19 @@
+#read counts data
+count_data <- read.csv("count_data.csv", header = TRUE, row.names = 1)
+colnames(count_data)
+head(count_data)
+
+#read in column data
+coldata <- read.csv("sample_data.csv", header = TRUE, row.names = 1)
+colnames(coldata)
+head(coldata)
+
+#make sure row names in coldata matches to column names in count_data
+all(colnames(count_data) %in% rownames(coldata))
+
+#make sure they in the same order
+all(colnames(count_data) == rownames(coldata))
+
+#set factor levels
+coldata$Treatment <- factor(coldata$Treatment)
+coldata$Sequencing <- factor(coldata$Sequencing)
